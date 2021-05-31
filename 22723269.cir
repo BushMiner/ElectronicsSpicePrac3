@@ -1,0 +1,87 @@
+* SPICE model for power amplifier
+*-------------------------------------------------------------
+* Author: Your Name
+* SU student number : 12345679
+* Last mod: 21 April 2021
+*=============================================================
+* Description: This Class-A is used to show (non-)compliance
+* specifications and tests for Electronics 315 practical 3
+*=============================================================
+
+* YOUR CIRCUIT MUST INCLUDE:
+* 1. A voltage source (DC 0) in series with the emitter of Qn, named Vicn, to measure I_{CQn}.
+*    Its POSITIVE node must be connected to the emitter of Qn, and named "qne"
+*      Example:  Vicn qne nodewhatever  DC  0
+* 2. A voltage source (DC 0) in series with the emitter of Qp, named Vicp, to measure I_{CQp}.
+*    Its NEGATIVE node must be connected to the emitter of Qp, and named "qpe"
+*      Example:  Vicp nodewhateverelse  qpe  DC  0
+
+* Include the transistor models as an external file ("models.cir"); these are standard for the module
+.include models.cir
+
+* Define amplifier as a subcircuit to avoid node name clashes in test bench
+* subckt name must be "audioamp"
+* ---------------------------------------------------------------------------------------------
+* Pin sequence must be:  SignalInput+, SpeakerOut+, SpeakerOut-, SupplyVoltage+, SupplyVoltage-
+* ---------------------------------------------------------------------------------------------
+
+.subckt  audioamp  in  out  outn  vcc  vee 
+
+* Finally, your circuit is defined below:
+
+* ============== CUT OUT BELOW AND BUILD YOUR CIRCUIT ====================
+* Class-B stage - no cross-over support
+
+
+
+
+cprp vcc 0 100u
+cprw vee 0 100u
+
+RE VCC N001 1756.359625116483
+R3 VCC N002 21954.495313956035
+Q5 N003 N002 N001 t2N2905A
+R4 N002 0 87817.98125582414
+Q6 N003 N008 N011 t2N2219A
+Q2 VCC N004 qne TIP41C
+Q1 VCC N003 N004 t2N2219A
+Vicn qne noden DC 0
+Ren noden N009 1u
+C1 OUT N009 4700u
+Rep N009 nodep 1u
+Vicp nodep qpe DC 0
+Q4 VEE N010 qpe TIP42C
+Q3 VEE N011 N010 t2N2905A
+R1 N003 N008 25695.541315454142
+R2 N008 N011 9466.778379377844
+
+
+Q7 VEE N012 N011 t2N2905A
+
+R6 N012 VEE 143212.8081931566
+R5 VCC N012 202566.5217337741
+
+
+C2 N012 IN1 10u
+RC8 VCC IN1 18691.493991524592
+R7 VCC N006 127027.57689533396
+R8 N006 VEE 3493.5066454451908
+Q8 IN1 N006 N007 t2N2219A
+RE8 N007 VEE 340
+C3 N006 IN 10u
+
+
+
+
+
+
+* ============== CUT OUT ABOVE AND BUILD YOUR CIRCUIT ====================
+
+* low resistance speaker connection to ground (to avoid putting "0" in the .subckt line
+
+Rcable outn 0  1m
+
+.ends
+* ============================================
+
+.end
