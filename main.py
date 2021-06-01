@@ -41,8 +41,8 @@ I_CQ8 = 1*m
 r_i_min_mult = 6.3
 i_C6_min = 1.4*m
 I_R1_i_C6_max_ratio = 0.5 # I_R1 = I_R1_i_C6_max_ratio * i_C6_max
-I_R1_i_B6_max_ratio = 5 # I_R1 = I_R1_i_B6_max_ratio * i_B6_max
-I_C5_i_C5_min_ratio = 1.1 # I_C5 = I_C5_i_C5_min_ratio * i_C5_min
+I_R1_i_B6_max_ratio = 5.5 # I_R1 = I_R1_i_B6_max_ratio * i_B6_max
+I_C5_i_C5_min_ratio = 1.05 # I_C5 = I_C5_i_C5_min_ratio * i_C5_min
 #Values that can be chosen END
 
 # Array of various vbe/veb on values, use transitor number as index, dummy zero value added for easy access
@@ -204,7 +204,6 @@ f.close()
 
 
 
-print("\n".join(list(map(lambda item: "%s\t:%s" % (item[0],format_number(item[1])), spice_map.items()))))
 
 
 
@@ -223,6 +222,13 @@ output = p.communicate()[0].decode("utf-8").split("\n")
 print("\n".join(output[-24:]))
 prev_out = open("prev_output", "a")
 prev_out.writelines(output[-24:])
-prev_out.close()
+
 #p.kill()
 #print()
+
+lines = list(map(lambda item: "%s\t:%s\n" % (item[0],format_number(item[1])), spice_map.items()))
+prev_out.writelines(lines)
+prev_out.close()
+print("".join(lines))
+
+print(v_re, v_o_max)
